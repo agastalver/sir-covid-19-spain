@@ -12,6 +12,8 @@ Los resultados están disponibles en las carpetas `images` y `data`.
 
 ![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
+Nota: `recovered` son los recuperados y los muertos. Se considera R en el modelo SIR, dado que no aportan más infección.
+
 ### Optimización
 
 ```
