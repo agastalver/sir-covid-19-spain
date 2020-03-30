@@ -163,3 +163,12 @@ plt.savefig(os.path.join("images", "generated-sir.pdf"), format="pdf", dpi=300)
 dff["cases"] = dff["recovered"] + dff["infected"]
 dff["forecast"] = dff["R"] + dff["I"]
 dff[["forecast", "cases"]].to_csv(os.path.join("data", "generated-cases.csv"))
+
+
+fig, ax = plt.subplots(figsize=(8,6))
+dff[["cases"]].plot(ax=ax)
+dff[["forecast"]].plot(ax=ax, linestyle=":")
+ax.set_title("SIR Model")
+ax.grid(True, which="both")
+plt.savefig(os.path.join("images", "generated-sir-cases.png"), format="png", dpi=300)
+plt.savefig(os.path.join("images", "generated-sir-cases.pdf"), format="pdf", dpi=300)
