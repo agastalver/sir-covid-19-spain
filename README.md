@@ -8,13 +8,9 @@ Modelo matemático SIR optimizado con los datos de COVID-19 del Ministerio de Sa
 
 Los resultados están disponibles en las carpetas `images` y `data`.
 
-### Gráfica de casos
-
-![total](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-total.png "Total cases")
-
 ### Gráfica de predicción
 
-![sir model](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
+![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
 ### Optimización
 
@@ -24,6 +20,13 @@ beta = 0.301632016967233
 gamma = 0.09679570331035678
 delay = +9
 ```
+### Gráfica de casos
+
+![total](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-total.png "Total cases")
+
+### Gráfica de casos por CCAA
+
+![ccaa](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-ccaa.png "CCAA cases")
 
 ## Información del método
 
