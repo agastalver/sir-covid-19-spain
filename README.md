@@ -4,9 +4,11 @@ Modelo matemático SIR optimizado con los datos de COVID-19 del Ministerio de Sa
 
 -----
 
-## Última optimización
+## Última optimización (2020-03-30)
 
-### Gráfica de predicción (2020-03-30)
+Los resultados están disponibles en las carpetas `images` y `data`.
+
+### Gráfica de predicción
 
 ![sir model](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
