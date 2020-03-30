@@ -41,7 +41,7 @@ Descrito también en wikipedia: https://en.wikipedia.org/wiki/Mathematical_model
 
 Se supone como desconocido los parámetros N, beta, gamma. Adicionalmente se supone que el modelo puede comenzar en un día anterior o posterior a los datos disponibles.
 
-El método de optimización es Nendel-Mead:
+El método de optimización es Nendel-Mead, ajustando mínimos cuadrados con respecto a los datos disponibles:
 
 ```
 Nelder, John A.; R. Mead (1965). "A simplex method for function minimization". Computer Journal. 7 (4): 308–313. doi:10.1093/comjnl/7.4.308.
