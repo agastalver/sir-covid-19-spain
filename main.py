@@ -158,3 +158,8 @@ dff.to_csv(os.path.join("data", "generated-sir.csv"))
 plt.savefig(os.path.join("images", "generated-sir.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-sir.pdf"), format="pdf", dpi=300)
 
+# case forecasting
+
+dff["cases"] = dff["recovered"] + dff["infected"]
+dff["forecast"] = dff["R"] + dff["I"]
+dff[["forecast", "cases"]].to_csv(os.path.join("data", "generated-cases.csv"))

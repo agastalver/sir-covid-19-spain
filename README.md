@@ -12,7 +12,24 @@ Los resultados están disponibles en las carpetas `images` y `data`.
 
 ![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
-Nota: `recovered` son los recuperados y los muertos. Se considera R en el modelo SIR, dado que no aportan más infección.
+**Nota**: `recovered` son los recuperados y los muertos. Se considera R en el modelo SIR, dado que no aportan más infección.
+
+### Tabla próximos días
+
+| Fecha      | Cases  | Infectados |
+|:----------:|:------:|:----------:|
+| 2020-03-30 |  94534 | 55249      |
+| 2020-03-31 | 104310 | 59423      |
+| 2020-04-01 | 113954 | 63082      |
+| 2020-04-02 | 123300 | 66116      |
+| 2020-04-03 | 132207 | 68448      |
+| 2020-04-04 | 140569 | 70044      |
+| 2020-04-05 | 148316 | 70904      |
+| 2020-04-06 | 155409 | 71062      |
+| 2020-04-07 | 161841 | 70574      |
+| 2020-04-08 | 167626 | 69517      |
+
+**Nota**: pico en 2020-04-06
 
 ### Optimización
 
