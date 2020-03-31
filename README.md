@@ -8,7 +8,10 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 ![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
-**Note**: `recovered` refers to people who has recovered from the virus or has died; as considered in the SIR model.
+**Note**: 
+
+* `susceptible`, `infected`, and `recovered`, stand for the observable population; thus, the ones that can be detected. The actual values could be higher.
+* `recovered` stands for people who has recovered from the virus or has died; as considered in the SIR model.
 
 -----
 
