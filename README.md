@@ -6,8 +6,6 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 ## Last optimization (2020-03-30)
 
-All results are available in the folders `images` and `data`.
-
 ### SIR model
 
 ![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
@@ -41,6 +39,9 @@ beta = 0.301632016967233
 gamma = 0.09679570331035678
 delay = +9
 ```
+
+All results are available in the folders `images` and `data`.
+
 ## Last data information
 
 ### Spanish total cases
