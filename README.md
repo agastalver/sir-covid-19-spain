@@ -32,10 +32,10 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 ### Optimized SIR parameters
 
 ```
-N = 125096.04181206386
-beta = 0.29118710786376023
-gamma = 0.047279622947446
-delay = 12
+N = 133090.46896526567
+beta = 0.28572994333788726
+gamma = 0.04803540389938131
+delay = 13
 ```
 
 All results are available in the folders `images` and `data`.
