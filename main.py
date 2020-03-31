@@ -105,7 +105,7 @@ dft["R"] = R
 
 dft["susceptible"] = N - dft["infected"]
 
-# future
+# forecasting
 
 far = 60 # days
 
@@ -124,11 +124,17 @@ dff = pd.DataFrame(d)
 dff["date"] = pd.date_range(dft.index[0],periods=days+far,freq="D")
 dff = dff.set_index("date")
 
+dff["cases"] = dff["recovered"] + dff["infected"]
+dff["forecast"] = dff["R"] + dff["I"]
+dff[["forecast", "cases"]].to_csv(os.path.join("data", "generated-cases.csv"))
+
 # graph
 
 fig, ax = plt.subplots(figsize=(8,6))
 dfp.plot(ax=ax)
-ax.set_title("CCAA")
+ax.set_title("Cases per region (CCAA)")
+ax.set_xlabel("")
+ax.set_ylabel("# of cases")
 ax.grid(True, which="both")
 dfp.to_csv(os.path.join("data", "generated-ccaa.csv"))
 plt.savefig(os.path.join("images", "generated-ccaa.png"), format="png", dpi=300)
@@ -136,7 +142,9 @@ plt.savefig(os.path.join("images", "generated-ccaa.pdf"), format="pdf", dpi=300)
 
 fig, ax = plt.subplots(figsize=(8,6))
 dft[["cases", "hospitalized", "uci", "dead"]].plot(ax=ax)
-ax.set_title("Total")
+ax.set_title("Totals in Spain")
+ax.set_xlabel("")
+ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
 dft[["cases", "hospitalized", "uci", "dead"]].to_csv(os.path.join("data", "generated-total.csv"))
 plt.savefig(os.path.join("images", "generated-total.png"), format="png", dpi=300)
@@ -144,7 +152,9 @@ plt.savefig(os.path.join("images", "generated-total.pdf"), format="pdf", dpi=300
 
 fig, ax = plt.subplots(figsize=(8,6))
 dfpct.plot(ax=ax)
-ax.set_title("% Dead")
+ax.set_title("Percentage of dead")
+ax.set_xlabel("")
+ax.set_ylabel("%")
 ax.grid(True, which="both")
 plt.savefig(os.path.join("images", "generated-deadpct.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-deadpct.pdf"), format="pdf", dpi=300)
@@ -152,23 +162,20 @@ plt.savefig(os.path.join("images", "generated-deadpct.pdf"), format="pdf", dpi=3
 fig, ax = plt.subplots(figsize=(8,6))
 dff[["susceptible", "infected", "recovered"]].plot(ax=ax)
 dff[["S", "I", "R"]].plot(ax=ax, linestyle=":")
-ax.set_title("SIR Model")
+ax.set_title("SIR model")
+ax.set_xlabel("")
+ax.set_ylabel("# of people")
 ax.grid(True, which="both")
 dff.to_csv(os.path.join("data", "generated-sir.csv"))
 plt.savefig(os.path.join("images", "generated-sir.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-sir.pdf"), format="pdf", dpi=300)
 
-# case forecasting
-
-dff["cases"] = dff["recovered"] + dff["infected"]
-dff["forecast"] = dff["R"] + dff["I"]
-dff[["forecast", "cases"]].to_csv(os.path.join("data", "generated-cases.csv"))
-
-
 fig, ax = plt.subplots(figsize=(8,6))
 dff[["cases"]].plot(ax=ax)
 dff[["forecast"]].plot(ax=ax, linestyle=":")
-ax.set_title("SIR Model")
+ax.set_title("Cases forecasting")
+ax.set_xlabel("")
+ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
 plt.savefig(os.path.join("images", "generated-sir-cases.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-sir-cases.pdf"), format="pdf", dpi=300)
