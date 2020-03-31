@@ -48,6 +48,8 @@ dft = dft.fillna(0)
 
 dfp = df.pivot(index="date", columns="ccaa", values="cases")
 
+dfto = dft.copy()
+
 dfpct = 100*dft["dead"]/dft["cases"]
 dft["recovered"] = dft["recovered"] + dft["dead"] # as SIR model defines
 dft["infected"] = dft["cases"] - dft["recovered"]
@@ -152,12 +154,12 @@ plt.savefig(os.path.join("images", "generated-ccaa.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-ccaa.pdf"), format="pdf", dpi=300, metadata=metadata)
 
 fig, ax = plt.subplots(figsize=(8,6))
-dft[["cases", "hospitalized", "uci", "dead", "recovered"]].plot(ax=ax)
+dfto[["cases", "hospitalized", "uci", "dead", "recovered"]].plot(ax=ax)
 ax.set_title("Totals in Spain")
 ax.set_xlabel("")
 ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
-dft[["cases", "hospitalized", "uci", "dead"]].to_csv(os.path.join("data", "generated-total.csv"))
+dfto[["cases", "hospitalized", "uci", "dead", "recovered"]].to_csv(os.path.join("data", "generated-total.csv"))
 plt.savefig(os.path.join("images", "generated-total.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-total.pdf"), format="pdf", dpi=300, metadata=metadata)
 
