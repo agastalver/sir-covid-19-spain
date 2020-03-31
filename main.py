@@ -150,7 +150,7 @@ plt.savefig(os.path.join("images", "generated-ccaa.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-ccaa.pdf"), format="pdf", dpi=300)
 
 fig, ax = plt.subplots(figsize=(8,6))
-dft[["cases", "hospitalized", "uci", "dead"]].plot(ax=ax)
+dft[["cases", "hospitalized", "uci", "dead", "recovered"]].plot(ax=ax)
 ax.set_title("Totals in Spain")
 ax.set_xlabel("")
 ax.set_ylabel("# of occurences")
