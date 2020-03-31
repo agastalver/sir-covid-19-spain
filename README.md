@@ -18,16 +18,16 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 | Date           | Infected   | Cases      |
 |:--------------:|:----------:|:----------:|
-| 2020-03-30     | 62664      | 86605      |
-| 2020-03-31     | 64980      | 91968      |
-| 2020-04-01     | 66585      | 96715      |
-| 2020-04-02     | 67522      | 100854     |
-| **2020-04-03** | **67857**  | **104419** |
-| 2020-04-04     | 67666      | 107463     |
-| 2020-04-05     | 67032      | 110044     |
-| 2020-04-06     | 66035      | 112223     |
-| 2020-04-07     | 64747      | 114056     |
-| 2020-04-08     | 63235      | 115597     |
+| 2020-03-31     | 66754      | 94391      |
+| 2020-04-01     | 68754      | 99677      |
+| 2020-04-02     | 70055      | 104345     |
+| 2020-04-03     | 70709      | 108412     |
+| **2020-04-04** | **70786**  | **111920** |
+| 2020-04-05     | 70366      | 114923     |
+| 2020-04-06     | 69530      | 117478     |
+| 2020-04-07     | 68354      | 119644     |
+| 2020-04-08     | 66908      | 121477     |
+| 2020-04-09     | 65254      | 123026     |
 
 ### Optimized SIR parameters
 
@@ -63,10 +63,6 @@ Main data source:
 * Spanish government: https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/situacionActual.htm
   * https://covid19.isciii.es/
   * https://covid19.isciii.es/resources/serie_historica_acumulados.csv
-
-Additional data source (for recovered people):
-
-* https://github.com/datadista/datasets/blob/master/COVID%2019/nacional_covid19.csv
 
 ### Epidemiology model
 
