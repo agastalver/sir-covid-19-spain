@@ -82,8 +82,8 @@ def fdelay(delay):
         beta = x[1]
         gamma = x[2]
         days = len(dft)
-        S, I, R = sir(N, beta, gamma, days + abs(delay)*2)
-        lim = abs(delay) + delay
+        S, I, R = sir(N, beta, gamma, days + abs(delay))
+        lim = abs(delay)
         S, I, R = S[lim:lim+days], I[lim:lim+days], R[lim:lim+days]
         Io, Ro = dft["infected"].values, dft["recovered"].values
         So = N - Io
@@ -95,7 +95,7 @@ def fdelay(delay):
 
 delay = 0
 result = fdelay(delay)
-for d in range(-15, 15):
+for d in range(15):
     r2 = fdelay(d)
     print("delay: {}, fun: {}".format(d, r2.fun))
     if r2.fun < result.fun:
@@ -110,8 +110,8 @@ days = len(dft)
 print("optimal: N = {}, beta = {}, gamma = {}, delay = {}".format(N, beta, gamma, delay))
 print("error: {}".format(result.fun))
 
-S, I, R =  sir(N, beta, gamma, days + abs(delay)*2)
-lim = abs(delay) + delay
+S, I, R = sir(N, beta, gamma, days + abs(delay))
+lim = abs(delay)
 S, I, R = S[lim:lim+days], I[lim:lim+days], R[lim:lim+days]
 
 dft["S"] = S
@@ -124,8 +124,8 @@ dft["susceptible"] = N - dft["infected"]
 
 far = 60 # days
 
-S, I, R =  sir(N, beta, gamma, days+far + abs(delay)*2)
-lim = abs(delay) + delay
+S, I, R =  sir(N, beta, gamma, days + far + abs(delay))
+lim = abs(delay)
 S, I, R = S[lim:lim+days+far], I[lim:lim+days+far], R[lim:lim+days+far]
 d = {
     "S": S,
