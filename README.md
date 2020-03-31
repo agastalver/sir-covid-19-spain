@@ -4,15 +4,15 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 -----
 
-## Last optimization (2020-03-30)
+![sir-cases](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir-cases.png "SIR Model Cases")
 
 ![sir](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir.png "SIR Model")
 
 **Note**: `recovered` refers to people who has recovered from the virus or has died; as considered in the SIR model.
 
-### Case forecasting
+-----
 
-![sir-cases](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-sir-cases.png "SIR Model Cases")
+## Last optimization
 
 ### Case forecasting table
 
@@ -40,6 +40,8 @@ delay = +9
 
 All results are available in the folders `images` and `data`.
 
+-----
+
 ## Last data information
 
 ### Spanish total cases
@@ -49,6 +51,8 @@ All results are available in the folders `images` and `data`.
 ### Spanish cases per region
 
 ![ccaa](https://github.com/agastalver/sir-covid-19-spain/raw/master/images/generated-ccaa.png "CCAA cases")
+
+-----
 
 ## Methodology
 
