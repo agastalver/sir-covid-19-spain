@@ -19,15 +19,23 @@ if not os.path.exists("images"):
 url = "https://covid19.isciii.es/resources/serie_historica_acumulados.csv"
 s = requests.get(url).text
 
+url2 = "https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19.csv"
+s2 = requests.get(url2).text
+
 # save file
 
 fn = os.path.join("data","serie_historica_acumulados.csv")
 with open(fn, "w") as f:
     f.write(s)
 
+fn2 = os.path.join("data","nacional_covid19.csv")
+with open(fn2, "w") as f2:
+    f2.write(s2)
+
 # read file
 
 df = pd.read_csv(fn, encoding="latin1")
+df2 = pd.read_csv(fn2)
 
 # prepare
 
@@ -35,13 +43,20 @@ df = df[:-1]
 df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+df2.columns = ["date", "cases", "recovered", "dead", "uci", "hospitalized"]
+df2["date"] = pd.to_datetime(df2["date"], format="%Y-%m-%d")
+df2 = df2.set_index("date")
+df2.index = df2.index - pd.DateOffset(1)
 
 dft = df[["date", "cases", "hospitalized", "uci", "dead"]].groupby("date").sum()
+dft["recovered"] = df2["recovered"]
+dft = dft.fillna(0)
+
 dfp = df.pivot(index="date", columns="ccaa", values="cases")
 
 dfpct = 100*dft["dead"]/dft["cases"]
-dft["infected"] = dft["hospitalized"] + dft["uci"]
-dft["recovered"] = dft["cases"] - dft["infected"]
+dft["recovered"] = dft["recovered"] + dft["dead"] # as SIR model defines
+dft["infected"] = dft["cases"] - dft["recovered"]
 
 # optimization SIR
 
@@ -134,7 +149,7 @@ fig, ax = plt.subplots(figsize=(8,6))
 dfp.plot(ax=ax)
 ax.set_title("Cases per region (CCAA)")
 ax.set_xlabel("")
-ax.set_ylabel("# of cases")
+ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
 dfp.to_csv(os.path.join("data", "generated-ccaa.csv"))
 plt.savefig(os.path.join("images", "generated-ccaa.png"), format="png", dpi=300)

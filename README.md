@@ -16,26 +16,26 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 ### Case forecasting table
 
-| Date           | Cases      | Infected   |
+| Date           | Infected   | Cases      |
 |:--------------:|:----------:|:----------:|
-| 2020-03-30     |  94534     | 55249      |
-| 2020-03-31     | 104310     | 59423      |
-| 2020-04-01     | 113954     | 63082      |
-| 2020-04-02     | 123300     | 66116      |
-| 2020-04-03     | 132207     | 68448      |
-| 2020-04-04     | 140569     | 70044      |
-| 2020-04-05     | 148316     | 70904      |
-| **2020-04-06** | **155409** | **71062**  |
-| 2020-04-07     | 161841     | 70574      |
-| 2020-04-08     | 167626     | 69517      |
+| 2020-03-30     | 62664      | 86605      |
+| 2020-03-31     | 64980      | 91968      |
+| 2020-04-01     | 66585      | 96715      |
+| 2020-04-02     | 67522      | 100854     |
+| **2020-04-03** | **67857**  | **104419** |
+| 2020-04-04     | 67666      | 107463     |
+| 2020-04-05     | 67032      | 110044     |
+| 2020-04-06     | 66035      | 112223     |
+| 2020-04-07     | 64747      | 114056     |
+| 2020-04-08     | 63235      | 115597     |
 
 ### Optimized SIR parameters
 
 ```
-N = 226135.58759394957
-beta = 0.301632016967233
-gamma = 0.09679570331035678
-delay = +9
+N = 125096.04181206386
+beta = 0.29118710786376023
+gamma = 0.047279622947446
+delay = 6
 ```
 
 All results are available in the folders `images` and `data`.
@@ -56,11 +56,17 @@ All results are available in the folders `images` and `data`.
 
 ## Methodology
 
-### Data
+### Data sources
 
-Disponibles en https://covid19.isciii.es/
+Main data source:
 
-O desde el enlace directo: https://covid19.isciii.es/resources/serie_historica_acumulados.csv
+* Spanish government: https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/situacionActual.htm
+  * https://covid19.isciii.es/
+  * https://covid19.isciii.es/resources/serie_historica_acumulados.csv
+
+Additional data source (for recovered people):
+
+* https://github.com/datadista/datasets/blob/master/COVID%2019/nacional_covid19.csv
 
 ### Epidemiology model
 
