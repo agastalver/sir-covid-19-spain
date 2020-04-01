@@ -58,6 +58,7 @@ dft["infected"] = dft["cases"] - dft["recovered"]
 
 inf0 = dft["infected"].values[0]
 rec0 = dft["recovered"].values[0]
+days = len(dft)
 
 def sir(N, beta, gamma, days):
     I0 = inf0
@@ -127,7 +128,7 @@ def fdelay(delay):
         loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
         return loss
 
-    result = optimize.minimize(f, [100000, 1, 1], method="Nelder-Mead")
+    result = optimize.minimize(f, [100000, 0.5, 0.05], method="Nelder-Mead")
 
     return result
 
@@ -146,7 +147,7 @@ def fdelay_lockdown(delay, lckday, nlckdays):
         loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
         return loss
 
-    result = optimize.minimize(f, [100000, 1, 1, 1], method="Nelder-Mead")
+    result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5], method="Nelder-Mead")
 
     return result
 
@@ -167,7 +168,6 @@ N = result.x[0]
 beta = result.x[1]
 gamma = result.x[2]
 delta = result.x[3]
-days = len(dft)
 
 print("optimal: N = {}, beta = {}, gamma = {}, delta = {}, delay = {}".format(N, beta, gamma, delta, delay))
 print("error: {}".format(result.fun))
