@@ -43,7 +43,7 @@ delta = 0.683455381349258
 delay = 0
 ```
 
-* `delta` stands for a factor of reduction of `beta` during the lockdown
+* `delta` stands for a factor of reduction of `beta` during the lockdown.
 * All results are available in the folders `images` and `data`.
 
 -----
