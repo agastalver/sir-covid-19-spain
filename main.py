@@ -154,7 +154,7 @@ lckday = dft.index.get_loc(pd.to_datetime("2020-03-15"))
 nlckdays = 30 # days
 
 delay = 0 # days back
-result = fdelay(delay)
+result = fdelay_lockdown(delay, lckday, nlckdays)
 for d in range(10):
     #res = fdelay(d)
     res = fdelay_lockdown(d, lckday, nlckdays)
@@ -256,7 +256,7 @@ fig, ax = plt.subplots(figsize=(8,6))
 dff[["cases"]].plot(ax=ax)
 dff[["forecast"]].plot(ax=ax, linestyle=":")
 ax.axvspan(dff.index[lckday], dff.index[lckday+nlckdays], alpha=0.1, color='red', label="_lockdown")
-plt.text(dff.index[lckday+nlckdays-3], N*0.85, 'lockdown', color='red', alpha=0.5, rotation=90)
+plt.text(dff.index[lckday+1], N*0.89, 'lockdown', color='red', alpha=0.5, rotation=90)
 ax.set_title("Cases forecasting")
 ax.set_xlabel("")
 ax.set_ylabel("# of occurences")
