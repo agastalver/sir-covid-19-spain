@@ -32,6 +32,7 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 | 2020-04-09     | 72862     | 134997     |
 | 2020-04-10     | 71256     | 137060     |
 | 2020-04-11     | 69450     | 138836     |
+| 2020-04-12     | 68148     | 141038     |
 
 ### Optimized SIR parameters
 
