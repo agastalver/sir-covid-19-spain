@@ -94,20 +94,20 @@ def sir_lockdown(N, beta, gamma, days, delta, lckday1, lckday2):
     t = np.linspace(0, days, days)
 
     y0 = S0, I0, R0
-    t0 = t[:min(lckday1, days)]
+    t0 = t[:min(lckday1+1, days)]
     ret = odeint(deriv, y0, t0, args=(N, beta, gamma, 1))
     S, I, R = ret.T
 
     if lckday1 < days:
         y1 = S[-1], I[-1], R[-1]
-        t1 = t[lckday1-1:min(lckday2, days)]
+        t1 = t[lckday1:min(lckday2+1, days)]
         ret = odeint(deriv, y1, t1, args=(N, beta, gamma, delta))
         S1, I1, R1 = ret.T
         S, I, R = np.concatenate((S, S1[1:])), np.concatenate((I, I1[1:])), np.concatenate((R, R1[1:]))
 
     if lckday2 < days:
         y2 = S1[-1], I1[-1], R1[-1]
-        t2 = t[lckday2-1:]
+        t2 = t[lckday2:]
         ret = odeint(deriv, y2, t2, args=(N, beta, gamma, 1))
         S2, I2, R2 = ret.T
         S, I, R = np.concatenate((S, S2[1:])), np.concatenate((I, I2[1:])), np.concatenate((R, R2[1:]))
