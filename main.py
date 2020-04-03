@@ -38,7 +38,7 @@ df = pd.read_csv(fn, encoding="latin1")
 
 # prepare
 
-df = df[:-1]
+df = df[:-2]
 df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
