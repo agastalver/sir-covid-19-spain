@@ -19,8 +19,8 @@ if not os.path.exists("images"):
 url = "https://covid19.isciii.es/resources/serie_historica_acumulados.csv"
 s = requests.get(url).text
 
-#url2 = "https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19.csv"
-#s2 = requests.get(url2).text
+url2 = "https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19.csv"
+s2 = requests.get(url2).text
 
 # save file
 
@@ -28,13 +28,14 @@ fn = os.path.join("data","serie_historica_acumulados.csv")
 with open(fn, "w") as f:
     f.write(s)
 
-#fn2 = os.path.join("data","nacional_covid19.csv")
-#with open(fn2, "w") as f2:
-#    f2.write(s2)
+fn2 = os.path.join("data","nacional_covid19.csv")
+with open(fn2, "w") as f2:
+    f2.write(s2)
 
 # read file
 
 df = pd.read_csv(fn, encoding="latin1")
+df2 = pd.read_csv(fn2)
 
 # prepare
 
@@ -43,7 +44,12 @@ df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
 
-dft = df[["date", "cases", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
+df2.columns = ["date", "cases", "recovered", "dead", "uci", "hospitalized"]
+df2["date"] = pd.to_datetime(df2["date"], format="%Y-%m-%d")
+df2 = df2.set_index("date").resample("D").interpolate().fillna(0)
+
+#dft = df[["date", "cases", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
+dft = df2
 dft = dft.fillna(0)
 
 dfp = df.pivot(index="date", columns="ccaa", values="cases")

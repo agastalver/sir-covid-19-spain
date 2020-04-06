@@ -22,25 +22,25 @@ SIR mathematical model for infectious diseases optimized for COVID-19 using Span
 
 | Date           | Infected  | Cases      |
 |:--------------:|:---------:|:----------:|
-| 2020-04-06     | 88803     | 138435     |
-| 2020-04-07     | 90478     | 144419     |
-| 2020-04-08     | 91610     | 149928     |
-| 2020-04-09     | 92226     | 154962     |
-| **2020-04-10** | **92362** | **159534** |
-| 2020-04-11     | 92062     | 163666     |
-| 2020-04-12     | 91371     | 167384     |
-| 2020-04-13     | 90339     | 170718     |
-| 2020-04-14     | 89012     | 173700     |
-| 2020-04-15     | 87436     | 176364     |
-| 2020-04-16     | 85652     | 178740     |
+| **2020-04-07** | **35456** | **134051** |
+| 2020-04-08     | 31347     | 138159     |
+| 2020-04-09     | 27732     | 141774     |
+| 2020-04-10     | 24567     | 144940     |
+| 2020-04-11     | 21803     | 147704     |
+| 2020-04-12     | 19396     | 150111     |
+| 2020-04-13     | 17302     | 152205     |
+| 2020-04-14     | 15480     | 154027     |
+| 2020-04-15     | 13895     | 155611     |
+| 2020-04-16     | 12516     | 156991     |
+| 2020-04-17     | 11312     | 158195     |
 
 ### Optimized SIR parameters
 
 ```
-N = 202789.07651335094
-beta = 0.39755427726657155
-gamma = 0.047592866436096726
-delta = 0.5498906777526739
+N = 169507.8991441981
+beta = 0.4514813259256714
+gamma = 0.0528979805591579
+delta = 0.5709690667290874
 delay = 0
 ```
 
@@ -70,6 +70,9 @@ Main data source:
 * Spanish government: https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/situacionActual.htm
   * https://covid19.isciii.es/
   * https://covid19.isciii.es/resources/serie_historica_acumulados.csv
+
+* Github: https://github.com/datadist/datasets
+  * https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/nacional_covid19.csv
 
 ### Epidemiology model
 
