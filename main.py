@@ -41,15 +41,15 @@ df2 = pd.read_csv(fn2)
 
 df = df[:-2]
 df = df.fillna(0)
-df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered"]
+df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered", ""]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
 
 df2.columns = ["date", "cases", "recovered", "dead", "uci", "hospitalized"]
 df2["date"] = pd.to_datetime(df2["date"], format="%Y-%m-%d")
 df2 = df2.set_index("date").resample("D").interpolate().fillna(0)
 
-#dft = df[["date", "cases", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
-dft = df2
+dft = df[["date", "cases", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
+#dft = df2
 dft = dft.fillna(0)
 
 dfp = df.pivot(index="date", columns="ccaa", values="cases")
@@ -148,9 +148,9 @@ def fdelay_lockdown(delay, lckday, nlckdays):
         S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, lckday + delay, lckday + nlckdays + delay)
         S, I, R = S[delay:delay+days], I[delay:delay+days], R[delay:delay+days]
         Io, Ro = dft["infected"].values, dft["recovered"].values
-        #So = N - Io
-        #loss = ((S - So)**2).sum()/days + ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
-        loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
+        So = N - Io - Ro
+        loss = ((S - So)**2).sum()/days + ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
+        #loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
         return loss
 
     result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5], method="Nelder-Mead")
