@@ -39,7 +39,7 @@ df2 = pd.read_csv(fn2)
 
 # prepare
 
-df = df[:-3]
+df = df[:-4]
 df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y", infer_datetime_format=True)
