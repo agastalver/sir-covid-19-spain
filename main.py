@@ -41,21 +41,21 @@ df2 = pd.read_csv(fn2)
 
 df = df[:-5]
 df = df.fillna(0)
-df.columns = ["ccaa", "date", "cases", "hospitalized", "uci", "dead", "recovered"]
+df.columns = ["ccaa", "date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y", infer_datetime_format=True)
 
 df2.columns = ["date", "cases", "recovered", "dead", "uci", "hospitalized"]
 df2["date"] = pd.to_datetime(df2["date"], format="%Y-%m-%d")
 df2 = df2.set_index("date").resample("D").interpolate().fillna(0)
 
-dft = df[["date", "cases", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
+dft = df[["date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
 #dft = df2
 dft = dft.fillna(0)
 
-dfp = df.pivot(index="date", columns="ccaa", values="cases")
-
 dfto = dft.copy()
 
+dft = dft.fillna(0)
+dft["cases"] = dft["cases"] + dft["pcr"] + dft["ac"]
 dfpct = 100*dft["dead"]/dft["cases"]
 dft["recovered"] = dft["recovered"] + dft["dead"] # as SIR model defines
 dft["infected"] = dft["cases"] - dft["recovered"]
@@ -236,22 +236,12 @@ dff[["forecast", "cases"]].to_csv(os.path.join("data", "generated-cases.csv"))
 metadata = {'Creator': None, 'Producer': None, 'CreationDate': None}
 
 fig, ax = plt.subplots(figsize=(8,6))
-dfp.plot(ax=ax)
-ax.set_title("Cases per region (CCAA)")
-ax.set_xlabel("")
-ax.set_ylabel("# of occurences")
-ax.grid(True, which="both")
-dfp.to_csv(os.path.join("data", "generated-ccaa.csv"))
-plt.savefig(os.path.join("images", "generated-ccaa.png"), format="png", dpi=300)
-plt.savefig(os.path.join("images", "generated-ccaa.pdf"), format="pdf", dpi=300, metadata=metadata)
-
-fig, ax = plt.subplots(figsize=(8,6))
-dfto[["cases", "hospitalized", "uci", "dead", "recovered"]].plot(ax=ax)
+dfto[["cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]].plot(ax=ax)
 ax.set_title("Totals in Spain")
 ax.set_xlabel("")
 ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
-dfto[["cases", "hospitalized", "uci", "dead", "recovered"]].to_csv(os.path.join("data", "generated-total.csv"))
+dfto[["cases", "pcr", "ac",  "hospitalized", "uci", "dead", "recovered"]].to_csv(os.path.join("data", "generated-total.csv"))
 plt.savefig(os.path.join("images", "generated-total.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-total.pdf"), format="pdf", dpi=300, metadata=metadata)
 
