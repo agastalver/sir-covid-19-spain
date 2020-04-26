@@ -85,7 +85,7 @@ def sir(N, beta, gamma, days):
 
     return S, I, R
 
-def sir_lockdown(N, beta, gamma, days, delta, epsilon, kappa, lckday1, lckday2, lckday3 ,lckday4):
+def sir_lockdown(N, beta, gamma, days, delta, epsilon, lckday1, lckday2, lckday3):
     I0 = inf0
     R0 = rec0
     S0 = N - I0 - R0
@@ -120,17 +120,10 @@ def sir_lockdown(N, beta, gamma, days, delta, epsilon, kappa, lckday1, lckday2, 
 
     if lckday3 < days:
         y3 = S2[-1], I2[-1], R2[-1]
-        t3 = t[lckday3:min(lckday4+1, days)]
-        ret = odeint(deriv, y3, t3, args=(N, beta, gamma, kappa))
+        t3 = t[lckday3:]
+        ret = odeint(deriv, y3, t3, args=(N, beta, gamma, 1))
         S3, I3, R3 = ret.T
         S, I, R = np.concatenate((S, S3[1:])), np.concatenate((I, I3[1:])), np.concatenate((R, R3[1:]))
-
-    if lckday4 < days:
-        y4 = S3[-1], I3[-1], R3[-1]
-        t4 = t[lckday4:]
-        ret = odeint(deriv, y4, t4, args=(N, beta, gamma, 1))
-        S4, I4, R4 = ret.T
-        S, I, R = np.concatenate((S, S4[1:])), np.concatenate((I, I4[1:])), np.concatenate((R, R4[1:]))
 
     return S, I, R
 
@@ -152,16 +145,15 @@ def fdelay(delay):
 
     return result
 
-def fdelay_lockdown(delay, lckday, nlckchgdays, nlckchgdays2, nlckdays):
+def fdelay_lockdown(delay, lckday, nlckchgdays, nlckdays):
     def f(x):
         N = x[0]
         beta = x[1]
         gamma = x[2]
         delta = x[3]
         epsilon = x[4]
-        kappa = x[5]
         days = len(dft)
-        S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, kappa, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckchgdays2 + delay, lckday + nlckdays + delay)
+        S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
         S, I, R = S[delay:delay+days], I[delay:delay+days], R[delay:delay+days]
         Io, Ro = dft["infected"].values, dft["recovered"].values
         So = N - Io - Ro
@@ -169,20 +161,19 @@ def fdelay_lockdown(delay, lckday, nlckchgdays, nlckchgdays2, nlckdays):
         #loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
         return loss
 
-    result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5, 0.5, 0.5], method="Nelder-Mead")
+    result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5, 1.05], method="Nelder-Mead")
 
     return result
 
 lckday = dft.index.get_loc(pd.to_datetime("2020-03-15"))
-nlckchgdays = 30 # days to first significant change in lockdown
-nlckchgdays2 = 35 # days to second significant change in lockdown
+nlckchgdays = 33 # days to first significant change in lockdown
 nlckdays = 55 # days
 
 delay = 0 # days back
-result = fdelay_lockdown(delay, lckday, nlckchgdays, nlckchgdays2, nlckdays)
+result = fdelay_lockdown(delay, lckday, nlckchgdays, nlckdays)
 for d in range(5):
     #res = fdelay(d)
-    res = fdelay_lockdown(d, lckday, nlckchgdays, nlckchgdays2, nlckdays)
+    res = fdelay_lockdown(d, lckday, nlckchgdays, nlckdays)
     print("delay: {}, fun: {}".format(d, res.fun))
     if res.fun < result.fun:
         delay = d
@@ -193,13 +184,12 @@ beta = result.x[1]
 gamma = result.x[2]
 delta = result.x[3]
 epsilon = result.x[4]
-kappa = result.x[5]
 
-print("optimal: N = {}, beta = {}, gamma = {}, delta = {}, epsilon = {}, kappa = {}, delay = {}".format(N, beta, gamma, delta, epsilon, kappa, delay))
+print("optimal: N = {}, beta = {}, gamma = {}, delta = {}, epsilon = {}, delay = {}".format(N, beta, gamma, delta, epsilon, delay))
 print("error: {}".format(result.fun))
 
 #S, I, R = sir(N, beta, gamma, days + delay)
-S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, kappa, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckchgdays2 + delay, lckday + nlckdays + delay)
+S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
 S, I, R = S[delay:delay+days], I[delay:delay+days], R[delay:delay+days]
 
 dft["S"] = S
@@ -213,7 +203,7 @@ dft["susceptible"] = N - dft["infected"] - dft["recovered"]
 far = 60 # days
 
 #S, I, R =  sir(N, beta, gamma, days + far + delay)
-S, I, R = sir_lockdown(N, beta, gamma, days + far + delay, delta, epsilon, kappa, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckchgdays2 + delay, lckday + nlckdays + delay)
+S, I, R = sir_lockdown(N, beta, gamma, days + far + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
 S, I, R = S[delay:delay+days+far], I[delay:delay+days+far], R[delay:delay+days+far]
 d = {
     "S": S,
