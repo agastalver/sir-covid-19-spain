@@ -39,7 +39,7 @@ df2 = pd.read_csv(fn2)
 
 # prepare
 
-df = df[:-5]
+df = df[:-6]
 df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y", infer_datetime_format=True)
@@ -269,3 +269,19 @@ ax.set_ylabel("# of occurences")
 ax.grid(True, which="both")
 plt.savefig(os.path.join("images", "generated-sir-cases.png"), format="png", dpi=300)
 plt.savefig(os.path.join("images", "generated-sir-cases.pdf"), format="pdf", dpi=300, metadata=metadata)
+
+# update
+with open("README.md") as f:
+    lines = f.readlines()
+
+data = dff.reset_index().loc[len(dft):len(dft)+9,["date","I","forecast"]].to_dict(orient="split")["data"]
+lines[24:34] = ["| {} | {:.0f} | {:.0f} |\n".format(d[0].date(), d[1], d[2]) for d in data]
+lines[38] = "N = {}\n".format(N)
+lines[39] = "beta = {}\n".format(beta)
+lines[40] = "gamma = {}\n".format(gamma)
+lines[41] = "delta = {}\n".format(delta)
+lines[42] = "epsilon = {}\n".format(epsilon)
+lines[43] = "delay = {}\n".format(delay)
+
+with open("README.md", "w") as f:
+    f.write("".join(lines))
