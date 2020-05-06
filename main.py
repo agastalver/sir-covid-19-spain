@@ -39,23 +39,23 @@ df2 = pd.read_csv(fn2)
 
 # prepare
 
-df = df[:-6]
+df = df[:-8]
 df = df.fillna(0)
 df.columns = ["ccaa", "date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]
 df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y", infer_datetime_format=True)
 
-df2.columns = ["date", "cases", "recovered", "dead", "uci", "hospitalized"]
+df2.columns = ["date", "cases", "pcr", "ac", "recovered", "dead", "uci", "hospitalized"]
 df2["date"] = pd.to_datetime(df2["date"], format="%Y-%m-%d")
 df2 = df2.set_index("date").resample("D").interpolate().fillna(0)
 
-dft = df[["date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
-#dft = df2
+#dft = df[["date", "cases", "pcr", "ac", "hospitalized", "uci", "dead", "recovered"]].groupby("date").sum()
+dft = df2
 dft = dft.fillna(0)
 
 dfto = dft.copy()
 
-dft = dft.fillna(0)
-dft["cases"] = dft["cases"] + dft["pcr"] + dft["ac"]
+#dft = dft.fillna(0)
+#dft["cases"] = dft["cases"] + dft["pcr"] + dft["ac"]
 dfpct = 100*dft["dead"]/dft["cases"]
 dft["recovered"] = dft["recovered"] + dft["dead"] # as SIR model defines
 dft["infected"] = dft["cases"] - dft["recovered"]
