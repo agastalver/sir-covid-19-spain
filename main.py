@@ -85,7 +85,7 @@ def sir(N, beta, gamma, days):
 
     return S, I, R
 
-def sir_lockdown(N, beta, gamma, days, delta, epsilon, lckday1, lckday2, lckday3):
+def sir_lockdown(N, beta, gamma, days, delta, epsilons, lckday1, lckday2s, lckday3):
     I0 = inf0
     R0 = rec0
     S0 = N - I0 - R0
@@ -106,17 +106,19 @@ def sir_lockdown(N, beta, gamma, days, delta, epsilon, lckday1, lckday2, lckday3
 
     if lckday1 < days:
         y1 = S[-1], I[-1], R[-1]
-        t1 = t[lckday1:min(lckday2+1, days)]
+        t1 = t[lckday1:min(lckday2s[0]+1, days)]
         ret = odeint(deriv, y1, t1, args=(N, beta, gamma, delta))
         S1, I1, R1 = ret.T
         S, I, R = np.concatenate((S, S1[1:])), np.concatenate((I, I1[1:])), np.concatenate((R, R1[1:]))
 
-    if lckday2 < days:
-        y2 = S1[-1], I1[-1], R1[-1]
-        t2 = t[lckday2:min(lckday3+1, days)]
-        ret = odeint(deriv, y2, t2, args=(N, beta, gamma, epsilon))
-        S2, I2, R2 = ret.T
-        S, I, R = np.concatenate((S, S2[1:])), np.concatenate((I, I2[1:])), np.concatenate((R, R2[1:]))
+    for idx, lckday2 in enumerate(lckday2s):
+        if lckday2 < days:
+            y2 = S[-1], I[-1], R[-1]
+            lckday2e = lckday3 if idx == (len(lckday2s)-1) else lckday2s[idx+1]
+            t2 = t[lckday2:min(lckday2e+1, days)]
+            ret = odeint(deriv, y2, t2, args=(N, beta, gamma, epsilons[idx]))
+            S2, I2, R2 = ret.T
+            S, I, R = np.concatenate((S, S2[1:])), np.concatenate((I, I2[1:])), np.concatenate((R, R2[1:]))
 
     if lckday3 < days:
         y3 = S2[-1], I2[-1], R2[-1]
@@ -151,9 +153,9 @@ def fdelay_lockdown(delay, lckday, nlckchgdays, nlckdays):
         beta = x[1]
         gamma = x[2]
         delta = x[3]
-        epsilon = x[4]
+        epsilons = x[4:]
         days = len(dft)
-        S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
+        S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilons, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
         S, I, R = S[delay:delay+days], I[delay:delay+days], R[delay:delay+days]
         Io, Ro = dft["infected"].values, dft["recovered"].values
         So = N - Io - Ro
@@ -161,13 +163,13 @@ def fdelay_lockdown(delay, lckday, nlckchgdays, nlckdays):
         #loss = ((I - Io)**2).sum()/days + ((R - Ro)**2).sum()/days
         return loss
 
-    result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5, 1.05], method="Nelder-Mead")
+    result = optimize.minimize(f, [100000, 0.5, 0.05, 0.5] + [0.5]*len(nlckchgdays), method="Nelder-Mead")
 
     return result
 
 lckday = dft.index.get_loc(pd.to_datetime("2020-03-15"))
-nlckchgdays = 33 # days to first significant change in lockdown
-nlckdays = 55 # days
+nlckchgdays = np.array([33,49,55]) # days to first significant change in lockdown
+nlckdays = 69 # days
 
 delay = 0 # days back
 result = fdelay_lockdown(delay, lckday, nlckchgdays, nlckdays)
@@ -183,13 +185,13 @@ N = result.x[0]
 beta = result.x[1]
 gamma = result.x[2]
 delta = result.x[3]
-epsilon = result.x[4]
+epsilons = result.x[4:]
 
-print("optimal: N = {}, beta = {}, gamma = {}, delta = {}, epsilon = {}, delay = {}".format(N, beta, gamma, delta, epsilon, delay))
+print("optimal: N = {}, beta = {}, gamma = {}, delta = {}, epsilons = {}, delay = {}".format(N, beta, gamma, delta, epsilons, delay))
 print("error: {}".format(result.fun))
 
 #S, I, R = sir(N, beta, gamma, days + delay)
-S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
+S, I, R = sir_lockdown(N, beta, gamma, days + delay, delta, epsilons, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
 S, I, R = S[delay:delay+days], I[delay:delay+days], R[delay:delay+days]
 
 dft["S"] = S
@@ -203,7 +205,7 @@ dft["susceptible"] = N - dft["infected"] - dft["recovered"]
 far = 60 # days
 
 #S, I, R =  sir(N, beta, gamma, days + far + delay)
-S, I, R = sir_lockdown(N, beta, gamma, days + far + delay, delta, epsilon, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
+S, I, R = sir_lockdown(N, beta, gamma, days + far + delay, delta, epsilons, lckday + delay, lckday + nlckchgdays + delay, lckday + nlckdays + delay)
 S, I, R = S[delay:delay+days+far], I[delay:delay+days+far], R[delay:delay+days+far]
 d = {
     "S": S,
@@ -280,7 +282,7 @@ lines[38] = "N = {}\n".format(N)
 lines[39] = "beta = {}\n".format(beta)
 lines[40] = "gamma = {}\n".format(gamma)
 lines[41] = "delta = {}\n".format(delta)
-lines[42] = "epsilon = {}\n".format(epsilon)
+lines[42] = "epsilons = {}\n".format(epsilons)
 lines[43] = "delay = {}\n".format(delay)
 
 with open("README.md", "w") as f:
